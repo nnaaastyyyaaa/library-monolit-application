@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  user_id      Int           @id @default(autoincrement())
+  name         String        @db.VarChar(32)
+  email        String        @db.VarChar(32)
+  password     String        @db.VarChar(32)
+  phone_number String?       @db.VarChar(20)
+  role         String        @default("user") @db.VarChar(32)
+  reservation  reservation[]
+}
+
+model category {
+  category_id   Int    @id @default(autoincrement())
+  category_name String @db.VarChar(32)
+  description   String @db.VarChar(255)
+  book          book[]
+}
+
+model book {
+  book_id        Int         @id @default(autoincrement())
+  title          String      @db.VarChar(32)
+  author         String      @db.VarChar(32)
+  isbn           Int
+  description    String      @db.VarChar(255)
+  published_year Int
+  category_id    Int
+  category       category    @relation(fields: [category_id], references: [category_id], onDelete: Cascade, onUpdate: NoAction)
+  inventory      inventory[]
+}
+
+model inventory {
+  inventory_id     Int           @id @default(autoincrement())
+  inventory_number Int
+  status           inv_status    @default(available)
+  book_id          Int
+  book             book          @relation(fields: [book_id], references: [book_id], onDelete: Cascade, onUpdate: NoAction)
+  reservation      reservation[]
+}
+
+model reservation {
+  reservation_id   Int        @id @default(autoincrement())
+  reservation_date DateTime   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  expiration_date  DateTime   @db.Date
+  status           res_status @default(active)
+  user_id          Int
+  user             user       @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  inventory_id     Int
+  inventory        inventory  @relation(fields: [inventory_id], references: [inventory_id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum inv_status {
+  available
+  reserved
+  borrowed
+  lost
+}
+
+enum res_status {
+  active
+  cancelled
+  completed
+}

@@ -1,0 +1,17 @@
+{
+  "name": "library-monolit-application",
+  "version": "1.0.0",
+  "description": "simple CRUD backend application",
+  "license": "ISC",
+  "author": "Anastasia Andriienko, Veronika Dunaeva",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "express": "^5.2.1",
+    "prisma": "^6.15.0"
+  }
+}
