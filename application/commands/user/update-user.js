@@ -1,4 +1,5 @@
 const { Email } = require("../../../domain/value-oblects/email");
+const { DomainError } = require("../../../domain/errors/domainError");
 
 class UpdateUser {
   constructor(userRepository) {
@@ -7,7 +8,7 @@ class UpdateUser {
   async execute(id, data) {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error("User not found");
+      throw new DomainError("User not found");
     }
     if (data.email) {
       const email = new Email(data.email);
@@ -15,7 +16,7 @@ class UpdateUser {
       const isExist = await this.userRepository.findByEmail(email.value);
 
       if (isExist && isExist.id !== Number(id)) {
-        throw new Error("Email already in use");
+        throw new DomainError("Email already in use");
       }
       user.changeEmail(email.value);
     }

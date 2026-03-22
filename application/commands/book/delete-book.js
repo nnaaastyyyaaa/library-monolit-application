@@ -1,3 +1,5 @@
+const { DomainError } = require("../../../domain/errors/domainError");
+
 class DeleteBook {
   constructor(bookRepository) {
     this.bookRepository = bookRepository;
@@ -5,7 +7,7 @@ class DeleteBook {
   async execute(id) {
     const book = await this.bookRepository.findById(id);
     if (!book) {
-      throw new Error("Book not found");
+      throw new DomainError("Book not found");
     }
 
     return await this.bookRepository.delete(id);

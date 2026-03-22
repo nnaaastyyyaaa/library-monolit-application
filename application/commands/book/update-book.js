@@ -1,3 +1,5 @@
+const { DomainError } = require("../../../domain/errors/domainError");
+
 class UpdateBook {
   constructor(bookRepository) {
     this.bookRepository = bookRepository;
@@ -5,12 +7,12 @@ class UpdateBook {
   async execute(id, data) {
     const book = await this.bookRepository.findById(id);
     if (!book) {
-      throw new Error("Book not found");
+      throw new DomainError("Book not found");
     }
     if (data.isbn) {
       const isExist = await this.bookRepository.findByIsbn(data.isbn);
       if (isExist) {
-        throw new Error("Book with this isbn already exists");
+        throw new DomainError("Book with this isbn already exists");
       }
       book.updateIsbn(data.isbn);
     }

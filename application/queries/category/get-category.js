@@ -1,3 +1,5 @@
+const { DomainError } = require("../../../domain/errors/domainError");
+
 class GetCategory {
   constructor(categoryRepository) {
     this.categoryRepository = categoryRepository;
@@ -5,7 +7,7 @@ class GetCategory {
   async execute(id) {
     const category = await this.categoryRepository.findById(id);
     if (!category) {
-      throw new Error("Cannot find category with this id");
+      throw new DomainError("Cannot find category with this id");
     }
     return category;
   }

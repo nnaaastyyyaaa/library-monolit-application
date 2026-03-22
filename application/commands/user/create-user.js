@@ -1,5 +1,6 @@
 const { Email } = require("../../../domain/value-oblects/email");
 const { User } = require("../../../domain/entities/user");
+const { DomainError } = require("../../../domain/errors/domainError");
 
 class CreateUser {
   constructor(userRepository) {
@@ -10,7 +11,7 @@ class CreateUser {
     const email = new Email(data.email);
     const isExist = await this.userRepository.findByEmail(email.value);
     if (isExist) {
-      throw new Error("User with this email alredy exists!");
+      throw new DomainError("User with this email alredy exists!");
     }
     const user = new User({
       name: data.name,
