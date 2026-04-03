@@ -1,5 +1,7 @@
 const prisma = require("../prisma/client");
-const { ReservationRepository } = require("../../domain/repository/reservationRepository");
+const {
+  ReservationRepository,
+} = require("../../domain/repository/reservationRepository");
 const { ReservationMapper } = require("../mappers/reservationMapper");
 
 class ReservationPrismaRepository extends ReservationRepository {
@@ -12,7 +14,7 @@ class ReservationPrismaRepository extends ReservationRepository {
         expiration_date: data.expiration_date,
         status: data.status,
         user: { connect: { user_id: Number(data.user_id) } },
-        inventory: { connect: { inventory_id: Number(data.inventory_id) } }
+        inventory: { connect: { inventory_id: Number(data.inventory_id) } },
       },
     });
 
@@ -24,8 +26,8 @@ class ReservationPrismaRepository extends ReservationRepository {
       where: { reservation_id: Number(id) },
       include: {
         user: true,
-        inventory: true
-      }
+        inventory: true,
+      },
     });
 
     return ReservationMapper.toDomain(data);
@@ -40,8 +42,8 @@ class ReservationPrismaRepository extends ReservationRepository {
     const data = await prisma.reservation.findFirst({
       where: {
         inventory_id: Number(inventoryId),
-        status: "active"
-      }
+        status: "active",
+      },
     });
 
     return ReservationMapper.toDomain(data);
@@ -57,7 +59,7 @@ class ReservationPrismaRepository extends ReservationRepository {
         expiration_date: data.expiration_date,
         status: data.status,
         user_id: Number(data.user_id),
-        inventory_id: Number(data.inventory_id)
+        inventory_id: Number(data.inventory_id),
       },
     });
 

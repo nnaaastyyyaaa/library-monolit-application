@@ -6,7 +6,7 @@ class CreateReservation {
 
   async execute(data) {
     const reservation = await this.reservationFactory.create(data);
-    
+
     return await this.reservationRepository.create(reservation);
   }
 }

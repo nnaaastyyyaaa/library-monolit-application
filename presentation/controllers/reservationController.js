@@ -23,7 +23,7 @@ class ReservationController {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
       }
-      res.status(500).json({ error: "Internal error" });
+      res.status(500).json({ error: e });
     }
   }
 
@@ -53,7 +53,10 @@ class ReservationController {
 
   async update(req, res) {
     try {
-      const result = await this.updateReservation.execute(req.params.id, req.body);
+      const result = await this.updateReservation.execute(
+        req.params.id,
+        req.body,
+      );
       res.json(result);
     } catch (e) {
       if (e instanceof DomainError) {

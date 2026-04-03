@@ -1,4 +1,5 @@
 const { Reservation } = require("../entities/reservation");
+const { ReservationPeriod } = require("../value-oblects/reservation-period");
 const { DomainError } = require("../errors/domainError");
 
 class ReservationFactory {
@@ -19,21 +20,22 @@ class ReservationFactory {
       throw new DomainError("Book instance not found in inventory");
     }
 
-    if (inventory.status !== 'available') {
-      throw new DomainError("This book instance is already reserved or checked out");
+    if (inventory.status !== "available") {
+      throw new DomainError(
+        "This book instance is already reserved or checked out",
+      );
     }
 
-    const expDate = new Date(expiration_date);
-    if (expDate <= new Date()) {
-      throw new DomainError("Expiration date cannot be in the past");
-    }
+    const period = new ReservationPeriod({
+      reservationDate: new Date(),
+      expirationDate: expiration_date,
+    });
 
     return new Reservation({
-      reservation_date: new Date(),
-      expiration_date: expDate,
+      period,
       status: "active",
       user_id: Number(user_id),
-      inventory_id: Number(inventory_id)
+      inventory_id: Number(inventory_id),
     });
   }
 }
