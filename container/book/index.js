@@ -1,12 +1,23 @@
+const prisma = require("../../infrastructure/prisma/client");
 const {
   BookPrismaRepository,
 } = require("../../infrastructure/repositories/bookPrismaRepository");
 
-const { CreateBook } = require("../../application/commands/book/create-book");
-const { GetBook } = require("../../application/queries/book/get-book");
-const { GetBooks } = require("../../application/queries/book/get-books");
-const { UpdateBook } = require("../../application/commands/book/update-book");
-const { DeleteBook } = require("../../application/commands/book/delete-book");
+const {
+  CreateBookHandler,
+} = require("../../application/commands/book/create-book/createBookHandler");
+const {
+  GetBookHandler,
+} = require("../../application/queries/book/get-book/getBookHandler");
+const {
+  GetBooksHandler,
+} = require("../../application/queries/book/get-books/getBooksHandler");
+const {
+  UpdateBookHandler,
+} = require("../../application/commands/book/update-book/updateBookHandler");
+const {
+  DeleteBookHandler,
+} = require("../../application/commands/book/delete-book/deleteBookHandler");
 
 const {
   BookController,
@@ -15,9 +26,9 @@ const {
 const repository = new BookPrismaRepository();
 
 module.exports = new BookController(
-  new CreateBook(repository),
-  new GetBook(repository),
-  new GetBooks(repository),
-  new UpdateBook(repository),
-  new DeleteBook(repository),
+  new CreateBookHandler(repository),
+  new GetBookHandler(prisma),
+  new GetBooksHandler(prisma),
+  new UpdateBookHandler(repository),
+  new DeleteBookHandler(repository),
 );

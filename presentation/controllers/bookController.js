@@ -1,4 +1,17 @@
 const { DomainError } = require("../../domain/errors/domainError");
+const {
+  CreateBookCommand,
+} = require("../../application/commands/book/create-book/createBookCommand");
+const {
+  UpdateBookCommand,
+} = require("../../application/commands/book/update-book/updateBookCommand");
+const {
+  DeleteBookCommand,
+} = require("../../application/commands/book/delete-book/deleteBookCommand");
+const {
+  GetBookQuery,
+} = require("../../application/queries/book/get-book/getBookQuery");
+
 class BookController {
   constructor(createBook, getBook, getBooks, updateBook, deleteBook) {
     this.createBook = createBook;
@@ -10,8 +23,9 @@ class BookController {
 
   async create(req, res) {
     try {
-      const result = await this.createBook.execute(req.body);
-      res.status(201).json(result);
+      const command = new CreateBookCommand(req.body);
+      const id = await this.createBook.execute(command);
+      res.status(201).json({ id });
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
@@ -22,7 +36,8 @@ class BookController {
 
   async getOne(req, res) {
     try {
-      const result = await this.getBook.execute(req.params.id);
+      const query = new GetBookQuery({ id: req.params.id });
+      const result = await this.getBook.execute(query);
       res.json(result);
     } catch (e) {
       if (e instanceof DomainError) {
@@ -40,14 +55,15 @@ class BookController {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
       }
-      res.status(500).json({ error: "Internal error" });
+      res.status(500).json({ e });
     }
   }
 
   async update(req, res) {
     try {
-      const result = await this.updateBook.execute(req.params.id, req.body);
-      res.json(result);
+      const command = new UpdateBookCommand({ id: req.params.id, ...req.body });
+      await this.updateBook.execute(command);
+      res.status(200).send();
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
@@ -58,8 +74,9 @@ class BookController {
 
   async delete(req, res) {
     try {
-      await this.deleteBook.execute(req.params.id);
-      res.status(202).send();
+      const command = new DeleteBookCommand({ id: req.params.id });
+      await this.deleteBook.execute(command);
+      res.status(204).send();
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
