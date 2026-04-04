@@ -1,22 +1,23 @@
+const prisma = require("../../infrastructure/prisma/client");
 const {
   InventoryPrismaRepository,
 } = require("../../infrastructure/repositories/inventoryPrismaRepository");
 
 const {
-  CreateInventory,
-} = require("../../application/commands/inventory/create-inventory");
+  CreateInventoryHandler,
+} = require("../../application/commands/inventory/create-inventory/createInventoryHandler");
 const {
-  GetInventory,
-} = require("../../application/queries/inventory/get-inventory");
+  GetInventoryHandler,
+} = require("../../application/queries/inventory/get-inventory/getInventoryHandler");
 const {
-  GetInventories,
-} = require("../../application/queries/inventory/get-inventories");
+  GetInventoriesHandler,
+} = require("../../application/queries/inventory/get-inventories/getInventoriesHandler");
 const {
-  UpdateInventory,
-} = require("../../application/commands/inventory/update-inventory");
+  UpdateInventoryHandler,
+} = require("../../application/commands/inventory/update-inventory/updateInventoryHandler");
 const {
-  DeleteInventory,
-} = require("../../application/commands/inventory/delete-inventory");
+  DeleteInventoryHandler,
+} = require("../../application/commands/inventory/delete-inventory/deleteInventoryHandler");
 
 const {
   InventoryController,
@@ -25,9 +26,9 @@ const {
 const repository = new InventoryPrismaRepository();
 
 module.exports = new InventoryController(
-  new CreateInventory(repository),
-  new GetInventory(repository),
-  new GetInventories(repository),
-  new UpdateInventory(repository),
-  new DeleteInventory(repository),
+  new CreateInventoryHandler(repository),
+  new GetInventoryHandler(prisma),
+  new GetInventoriesHandler(prisma),
+  new UpdateInventoryHandler(repository),
+  new DeleteInventoryHandler(repository),
 );
