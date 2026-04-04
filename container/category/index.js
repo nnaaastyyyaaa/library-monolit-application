@@ -1,22 +1,23 @@
+const prisma = require("../../infrastructure/prisma/client");
 const {
   CategoryPrismaRepository,
 } = require("../../infrastructure/repositories/categoryPrismaRepository");
 
 const {
-  CreateCategory,
-} = require("../../application/commands/category/create-category");
+  CreateCategoryHandler,
+} = require("../../application/commands/category/create-category/createCategoryHandler");
 const {
-  GetCategory,
-} = require("../../application/queries/category/get-category");
+  GetCategoryHandler,
+} = require("../../application/queries/category/get-category/getCategoryHandler");
 const {
-  GetCategories,
-} = require("../../application/queries/category/get-categories");
+  GetCategoriesHandler,
+} = require("../../application/queries/category/get-categories/getCategoriesHandler");
 const {
-  UpdateCategory,
-} = require("../../application/commands/category/update-category");
+  UpdateCategoryHandler,
+} = require("../../application/commands/category/update-category/updateCategoryHandler");
 const {
-  DeleteCategory,
-} = require("../../application/commands/category/delete-category");
+  DeleteCategoryHandler,
+} = require("../../application/commands/category/delete-category/deleteCategoryHandler");
 
 const {
   CategoryController,
@@ -25,9 +26,9 @@ const {
 const repository = new CategoryPrismaRepository();
 
 module.exports = new CategoryController(
-  new CreateCategory(repository),
-  new GetCategory(repository),
-  new GetCategories(repository),
-  new UpdateCategory(repository),
-  new DeleteCategory(repository),
+  new CreateCategoryHandler(repository),
+  new GetCategoryHandler(prisma),
+  new GetCategoriesHandler(prisma),
+  new UpdateCategoryHandler(repository),
+  new DeleteCategoryHandler(repository),
 );

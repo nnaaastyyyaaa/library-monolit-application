@@ -1,5 +1,18 @@
 const { DomainError } = require("../../domain/errors/domainError");
 
+const {
+  CreateCategoryCommand,
+} = require("../../application/commands/category/create-category/createCategoryCommand");
+const {
+  DeleteCategoryCommand,
+} = require("../../application/commands/category/delete-category/deleteCategoryCommand");
+const {
+  UpdateCategoryCommand,
+} = require("../../application/commands/category/update-category/updateCategoryCommand");
+const {
+  GetCategoryQuery,
+} = require("../../application/queries/category/get-category/getCategoryQuery");
+
 class CategoryController {
   constructor(
     createCategory,
@@ -17,8 +30,9 @@ class CategoryController {
 
   async create(req, res) {
     try {
-      const result = await this.createCategory.execute(req.body);
-      res.status(201).json(result);
+      const command = new CreateCategoryCommand(req.body);
+      const id = await this.createCategory.execute(command);
+      res.status(201).json({ id });
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
@@ -29,7 +43,9 @@ class CategoryController {
 
   async getOne(req, res) {
     try {
-      const result = await this.getCategory.execute(req.params.id);
+      const query = new GetCategoryQuery({ id: req.params.id });
+      console.log(query);
+      const result = await this.getCategory.execute(query);
       res.json(result);
     } catch (e) {
       if (e instanceof DomainError) {
@@ -53,8 +69,12 @@ class CategoryController {
 
   async update(req, res) {
     try {
-      const result = await this.updateCategory.execute(req.params.id, req.body);
-      res.json(result);
+      const command = new UpdateCategoryCommand({
+        id: req.params.id,
+        ...req.body,
+      });
+      await this.updateCategory.execute(command);
+      res.status(200).send();
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
@@ -65,8 +85,9 @@ class CategoryController {
 
   async delete(req, res) {
     try {
-      const result = await this.deleteCategory.execute(req.params.id);
-      res.status(202).send();
+      const command = new DeleteCategoryCommand({ id: req.params.id });
+      await this.deleteCategory.execute(command);
+      res.status(204).send();
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });

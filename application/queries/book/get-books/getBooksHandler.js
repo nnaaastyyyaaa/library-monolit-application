@@ -4,9 +4,7 @@ class GetBooksHandler {
   }
 
   async execute() {
-    console.log("execute here");
-    const data = await this.prisma.book.findMany();
-    return data;
+    return await this.prisma.book.findMany();
   }
 }
 
