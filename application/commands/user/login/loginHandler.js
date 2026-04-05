@@ -1,20 +1,20 @@
 const bcrypt = require("bcrypt");
-const { DomainError } = require("../../../domain/errors/domainError");
+const { DomainError } = require("../../../../domain/errors/domainError");
 
-class LoginUser {
+class LoginHandler {
   constructor(userRepository, jwtService) {
     this.userRepository = userRepository;
     this.jwtService = jwtService;
   }
 
-  async execute({ email, password }) {
-    const user = await this.userRepository.findByEmail(email);
+  async execute(command) {
+    const user = await this.userRepository.findByEmail(command.email);
 
     if (!user) {
       throw new DomainError("Invalid email");
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(command.password, user.password);
 
     if (!isMatch) {
       throw new DomainError("Invalid password");
@@ -29,4 +29,4 @@ class LoginUser {
   }
 }
 
-module.exports = { LoginUser };
+module.exports = { LoginHandler };

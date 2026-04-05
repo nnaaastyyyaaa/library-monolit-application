@@ -1,80 +1,65 @@
-const { DomainError } = require("../../domain/errors/domainError");
+const { CreateReservationCommand } = require("../../application/commands/reservation/create-reservation/createReservationCommand");
+const { UpdateReservationCommand } = require("../../application/commands/reservation/update-reservation/updateReservationCommand");
+const { DeleteReservationCommand } = require("../../application/commands/reservation/delete-reservation/deleteReservationCommand");
+const { GetReservationQuery } = require("../../application/queries/reservation/get-reservation/getReservationQuery");
+const { GetReservationsQuery } = require("../../application/queries/reservation/get-reservations/getReservationsQuery");
 
 class ReservationController {
-  constructor(
-    createReservation,
-    getReservation,
-    getReservations,
-    updateReservation,
-    deleteReservation,
-  ) {
-    this.createReservation = createReservation;
-    this.getReservation = getReservation;
-    this.getReservations = getReservations;
-    this.updateReservation = updateReservation;
-    this.deleteReservation = deleteReservation;
+  constructor(createHandler, updateHandler, deleteHandler, getHandler, getAllHandler) {
+    this.createHandler = createHandler;
+    this.updateHandler = updateHandler;
+    this.deleteHandler = deleteHandler;
+    this.getHandler = getHandler;
+    this.getAllHandler = getAllHandler;
   }
 
-  async create(req, res) {
+  async create(req, res, next) {
     try {
-      const result = await this.createReservation.execute(req.body);
-      res.status(201).json(result);
-    } catch (e) {
-      if (e instanceof DomainError) {
-        return res.status(400).json({ error: e.message });
-      }
-      res.status(500).json({ error: e });
+      const command = new CreateReservationCommand(req.body);
+      const id = await this.createHandler.execute(command);
+      res.status(201).json({ id });
+    } catch (error) {
+      next(error);
     }
   }
 
-  async getOne(req, res) {
+  async update(req, res, next) {
     try {
-      const result = await this.getReservation.execute(req.params.id);
-      res.json(result);
-    } catch (e) {
-      if (e instanceof DomainError) {
-        return res.status(400).json({ error: e.message });
-      }
-      res.status(500).json({ error: "Internal error" });
+      const command = new UpdateReservationCommand({ id: req.params.id, ...req.body });
+      await this.updateHandler.execute(command);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
     }
   }
 
-  async getAll(req, res) {
+  async delete(req, res, next) {
     try {
-      const result = await this.getReservations.execute();
-      res.json(result);
-    } catch (e) {
-      if (e instanceof DomainError) {
-        return res.status(400).json({ error: e.message });
-      }
-      res.status(500).json({ error: "Internal error" });
+      const command = new DeleteReservationCommand({ id: req.params.id });
+      await this.deleteHandler.execute(command);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
     }
   }
 
-  async update(req, res) {
+  async getById(req, res, next) {
     try {
-      const result = await this.updateReservation.execute(
-        req.params.id,
-        req.body,
-      );
-      res.json(result);
-    } catch (e) {
-      if (e instanceof DomainError) {
-        return res.status(400).json({ error: e.message });
-      }
-      res.status(500).json({ error: "Internal error" });
+      const query = new GetReservationQuery({ id: req.params.id });
+      const reservation = await this.getHandler.execute(query);
+      res.json(reservation);
+    } catch (error) {
+      next(error);
     }
   }
 
-  async delete(req, res) {
+  async getAll(req, res, next) {
     try {
-      const result = await this.deleteReservation.execute(req.params.id);
-      res.status(202).send();
-    } catch (e) {
-      if (e instanceof DomainError) {
-        return res.status(400).json({ error: e.message });
-      }
-      res.status(500).json({ error: "Internal error" });
+      const query = new GetReservationsQuery();
+      const reservations = await this.getAllHandler.execute(query);
+      res.json(reservations);
+    } catch (error) {
+      next(error);
     }
   }
 }
