@@ -11,7 +11,7 @@ model user {
   user_id      Int           @id @default(autoincrement())
   name         String        @db.VarChar(32)
   email        String        @db.VarChar(32)
-  password     String        @db.VarChar(32)
+  password     String        @db.VarChar(255)
   phone_number String?       @db.VarChar(20)
   role         String        @default("user") @db.VarChar(32)
   reservation  reservation[]
