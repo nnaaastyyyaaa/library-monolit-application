@@ -55,15 +55,15 @@ class UserController {
     }
   }
 
-  async getById(req, res, next) {
-    try {
-      const query = new GetUserQuery({ id: req.params.id });
-      const user = await this.getUserHandler.execute(query);
-      res.json(user);
-    } catch (error) {
-      next(error);
-    }
+ async getOne(req, res, next) {
+  try {
+    const query = new GetUserQuery({ id: req.params.id });
+    const user = await this.getUserHandler.execute(query);
+    res.json(user);
+  } catch (error) {
+    next(error);
   }
+}
 
   async getAll(req, res, next) {
     try {

@@ -5,12 +5,12 @@ const { GetReservationQuery } = require("../../application/queries/reservation/g
 const { GetReservationsQuery } = require("../../application/queries/reservation/get-reservations/getReservationsQuery");
 
 class ReservationController {
-  constructor(createHandler, updateHandler, deleteHandler, getHandler, getAllHandler) {
+  constructor(createHandler, getHandler, getAllHandler, updateHandler, deleteHandler) {
     this.createHandler = createHandler;
-    this.updateHandler = updateHandler;
-    this.deleteHandler = deleteHandler;
     this.getHandler = getHandler;
     this.getAllHandler = getAllHandler;
+    this.updateHandler = updateHandler;
+    this.deleteHandler = deleteHandler;
   }
 
   async create(req, res, next) {
@@ -43,7 +43,7 @@ class ReservationController {
     }
   }
 
-  async getById(req, res, next) {
+  async getOne(req, res, next) {
     try {
       const query = new GetReservationQuery({ id: req.params.id });
       const reservation = await this.getHandler.execute(query);

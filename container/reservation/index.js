@@ -1,37 +1,22 @@
-const {
-  ReservationPrismaRepository,
-} = require("../../infrastructure/repositories/reservationPrismaRepository");
-const {
-  ReservationFactory,
-} = require("../../domain/factories/reservationFactory");
+const prisma = require("../../infrastructure/prisma/client");
+const { ReservationPrismaRepository } = require("../../infrastructure/repositories/reservationPrismaRepository");
+const { InventoryPrismaRepository } = require("../../infrastructure/repositories/inventoryPrismaRepository");
 
-const {
-  CreateReservation,
-} = require("../../application/commands/reservation/create-reservation");
-const {
-  GetReservation,
-} = require("../../application/queries/reservation/get-reservation");
-const {
-  GetReservations,
-} = require("../../application/queries/reservation/get-reservations");
-const {
-  UpdateReservation,
-} = require("../../application/commands/reservation/update-reservation");
-const {
-  DeleteReservation,
-} = require("../../application/commands/reservation/delete-reservation");
+const { CreateReservationHandler } = require("../../application/commands/reservation/create-reservation/createReservationHandler");
+const { UpdateReservationHandler } = require("../../application/commands/reservation/update-reservation/updateReservationHandler");
+const { DeleteReservationHandler } = require("../../application/commands/reservation/delete-reservation/deleteReservationHandler");
+const { GetReservationHandler } = require("../../application/queries/reservation/get-reservation/getReservationHandler");
+const { GetReservationsHandler } = require("../../application/queries/reservation/get-reservations/getReservationsHandler");
 
-const {
-  ReservationController,
-} = require("../../presentation/controllers/reservationController");
+const { ReservationController } = require("../../presentation/controllers/reservationController");
 
 const repository = new ReservationPrismaRepository();
-const factory = new ReservationFactory();
+const inventoryRepo = new InventoryPrismaRepository();
 
 module.exports = new ReservationController(
-  new CreateReservation(repository, factory),
-  new GetReservation(repository),
-  new GetReservations(repository),
-  new UpdateReservation(repository, factory),
-  new DeleteReservation(repository),
+  new CreateReservationHandler(repository, inventoryRepo),
+  new GetReservationHandler(prisma),                      
+  new GetReservationsHandler(prisma),                
+  new UpdateReservationHandler(repository),         
+  new DeleteReservationHandler(repository)              
 );
