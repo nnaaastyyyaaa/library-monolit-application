@@ -1,5 +1,5 @@
-const { ReservationFactory } = require("../domain/factories/reservationFactory");
-const { DomainError } = require("../domain/errors/domainError");
+const { ReservationFactory } = require("../../domain/factories/reservationFactory");
+const { DomainError } = require("../../domain/errors/domainError");
 
 describe("ReservationFactory Unit Tests", () => {
   let factory;

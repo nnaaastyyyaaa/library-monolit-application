@@ -3,8 +3,8 @@ process.env.JWT_SECRET = "testsecret";
 jest.resetModules();
 
 const request = require("supertest");
-const app = require("../app");
-const prisma = require("../infrastructure/prisma/client");
+const app = require("../../app");
+const prisma = require("../../infrastructure/prisma/client");
 const bcrypt = require("bcrypt");
 
 describe("Reservation API Integration Tests", () => {

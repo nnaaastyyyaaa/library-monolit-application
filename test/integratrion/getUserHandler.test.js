@@ -1,6 +1,6 @@
-const { GetUserHandler } = require('../application/queries/user/get-user/getUserHandler');
-const { GetUserQuery } = require('../application/queries/user/get-user/getUserQuery');
-const prisma = require('../infrastructure/prisma/client');
+const { GetUserHandler } = require('../../application/queries/user/get-user/getUserHandler');
+const { GetUserQuery } = require('../../application/queries/user/get-user/getUserQuery');
+const prisma = require('../../infrastructure/prisma/client');
 
 describe('GetUserHandler Integration', () => {
   let handler;

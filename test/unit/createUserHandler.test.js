@@ -1,6 +1,6 @@
-const { CreateUserHandler } = require('../application/commands/user/create-user/createUserHandler');
-const { CreateUserCommand } = require('../application/commands/user/create-user/createUserCommand');
-const { DomainError } = require('../domain/errors/domainError');
+const { CreateUserHandler } = require('../../application/commands/user/create-user/createUserHandler');
+const { CreateUserCommand } = require('../../application/commands/user/create-user/createUserCommand');
+const { DomainError } = require('../../domain/errors/domainError');
 
 describe('CreateUserHandler', () => {
   let userRepositoryMock;

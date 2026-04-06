@@ -1,6 +1,6 @@
-const { CreateInventoryHandler } = require("../application/commands/inventory/create-inventory/createInventoryHandler");
-const { CreateInventoryCommand } = require("../application/commands/inventory/create-inventory/createInventoryCommand");
-const { DomainError } = require("../domain/errors/domainError");
+const { CreateInventoryHandler } = require("../../application/commands/inventory/create-inventory/createInventoryHandler");
+const { CreateInventoryCommand } = require("../../application/commands/inventory/create-inventory/createInventoryCommand");
+const { DomainError } = require("../../domain/errors/domainError");
 
 describe("CreateInventory Command", () => {
   let mockInvRepo;
