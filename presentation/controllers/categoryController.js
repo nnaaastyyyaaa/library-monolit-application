@@ -44,7 +44,6 @@ class CategoryController {
   async getOne(req, res) {
     try {
       const query = new GetCategoryQuery({ id: req.params.id });
-      console.log(query);
       const result = await this.getCategory.execute(query);
       res.json(result);
     } catch (e) {

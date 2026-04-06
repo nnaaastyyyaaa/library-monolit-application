@@ -8,6 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:integration": "jest test/integration",
     "start": "node server.js"
   },
   "dependencies": {
