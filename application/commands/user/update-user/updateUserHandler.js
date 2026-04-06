@@ -25,9 +25,9 @@ class UpdateUserHandler {
     user.phone_number = command.phone_number || user.phone_number;
     user.role = command.role || user.role;
 
-    await this.userRepository.update(user);
-    
-    return; 
+    await this.userRepository.update(command.id, user);
+
+    return;
   }
 }
 

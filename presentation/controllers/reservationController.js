@@ -1,11 +1,28 @@
-const { CreateReservationCommand } = require("../../application/commands/reservation/create-reservation/createReservationCommand");
-const { UpdateReservationCommand } = require("../../application/commands/reservation/update-reservation/updateReservationCommand");
-const { DeleteReservationCommand } = require("../../application/commands/reservation/delete-reservation/deleteReservationCommand");
-const { GetReservationQuery } = require("../../application/queries/reservation/get-reservation/getReservationQuery");
-const { GetReservationsQuery } = require("../../application/queries/reservation/get-reservations/getReservationsQuery");
+const { DomainError } = require("../../domain/errors/domainError");
+const {
+  CreateReservationCommand,
+} = require("../../application/commands/reservation/create-reservation/createReservationCommand");
+const {
+  UpdateReservationCommand,
+} = require("../../application/commands/reservation/update-reservation/updateReservationCommand");
+const {
+  DeleteReservationCommand,
+} = require("../../application/commands/reservation/delete-reservation/deleteReservationCommand");
+const {
+  GetReservationQuery,
+} = require("../../application/queries/reservation/get-reservation/getReservationQuery");
+const {
+  GetReservationsQuery,
+} = require("../../application/queries/reservation/get-reservations/getReservationsQuery");
 
 class ReservationController {
-  constructor(createHandler, getHandler, getAllHandler, updateHandler, deleteHandler) {
+  constructor(
+    createHandler,
+    getHandler,
+    getAllHandler,
+    updateHandler,
+    deleteHandler,
+  ) {
     this.createHandler = createHandler;
     this.getHandler = getHandler;
     this.getAllHandler = getAllHandler;
@@ -18,18 +35,27 @@ class ReservationController {
       const command = new CreateReservationCommand(req.body);
       const id = await this.createHandler.execute(command);
       res.status(201).json({ id });
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
     }
   }
 
   async update(req, res, next) {
     try {
-      const command = new UpdateReservationCommand({ id: req.params.id, ...req.body });
+      const command = new UpdateReservationCommand({
+        id: req.params.id,
+        ...req.body,
+      });
       await this.updateHandler.execute(command);
       res.status(204).send();
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
     }
   }
 
@@ -38,8 +64,11 @@ class ReservationController {
       const command = new DeleteReservationCommand({ id: req.params.id });
       await this.deleteHandler.execute(command);
       res.status(204).send();
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
     }
   }
 
@@ -48,8 +77,11 @@ class ReservationController {
       const query = new GetReservationQuery({ id: req.params.id });
       const reservation = await this.getHandler.execute(query);
       res.json(reservation);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
     }
   }
 
@@ -58,8 +90,11 @@ class ReservationController {
       const query = new GetReservationsQuery();
       const reservations = await this.getAllHandler.execute(query);
       res.json(reservations);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
     }
   }
 }

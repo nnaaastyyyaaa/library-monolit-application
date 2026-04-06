@@ -2,26 +2,28 @@ const { Reservation } = require("../../../../domain/entities/reservation");
 const { DomainError } = require("../../../../domain/errors/domainError");
 
 class CreateReservationHandler {
-  constructor(reservationRepository, inventoryRepository) {
+  constructor(reservationRepository, reservationFactory, inventoryRepository) {
     this.reservationRepository = reservationRepository;
+    this.reservationFactory = reservationFactory;
     this.inventoryRepository = inventoryRepository;
   }
 
   async execute(command) {
-    const inventory = await this.inventoryRepository.findById(command.inventory_id);
-    if (!inventory) {
-       throw new DomainError("Inventory item not found");
-    }
-
-    const reservation = new Reservation({
+    const reservation = await this.reservationFactory.create({
       user_id: command.user_id,
       inventory_id: command.inventory_id,
-      status: command.status || "pending"
+      expiration_date: command.expiration_date,
     });
 
+    const inventory = await this.inventoryRepository.findById(
+      command.inventory_id,
+    );
+    inventory.status = "reserved";
+    await this.inventoryRepository.update(inventory.id, inventory);
+
     const created = await this.reservationRepository.create(reservation);
-    
-    return created.id; 
+
+    return created.id;
   }
 }
 

@@ -25,12 +25,12 @@ describe("Reservation API Integration Tests", () => {
       },
     });
 
-    const loginResponse = await request(app).post("/users/login").send({
+    loginResponse = await request(app).post("/users/login").send({
       email: testAdminEmail,
       password: "password123",
     });
 
-    token = loginResponse.body;
+    token = loginResponse.body.token;
   });
 
   afterAll(async () => {
@@ -61,13 +61,10 @@ describe("Reservation API Integration Tests", () => {
     expect(response.body).toHaveProperty("error");
   });
 
-  console.log("LOGIN BODY:", loginResponse.body);
-console.log("TOKEN:", token);
-
   it("DELETE /reservations/reservation/:id має повертати статус 400 для неіснуючого ID", async () => {
     const response = await request(app)
       .delete("/reservations/reservation/9999")
-      .set("Authorization", `Bearer ${token}`); 
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("error");
