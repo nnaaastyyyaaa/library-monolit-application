@@ -12,6 +12,8 @@ const categoryController = require("./container/category");
 const inventoryController = require("./container/inventory");
 const reservationController = require("./container/reservation");
 
+require("./container/index");
+
 const app = express();
 app.use(express.json());
 

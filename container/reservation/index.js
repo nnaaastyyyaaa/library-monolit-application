@@ -9,8 +9,12 @@ const {
   UserPrismaRepository,
 } = require("../../infrastructure/repositories/userPrismaRepository");
 const {
+  BookPrismaRepository,
+} = require("../../infrastructure/repositories/bookPrismaRepository");
+const {
   ReservationFactory,
 } = require("../../domain/factories/reservationFactory");
+const { eventBus } = require("../../eventBus/eventBus");
 
 const {
   CreateReservationHandler,
@@ -31,14 +35,21 @@ const {
 const {
   ReservationController,
 } = require("../../presentation/controllers/reservationController");
-
 const repository = new ReservationPrismaRepository();
 const inventoryRepo = new InventoryPrismaRepository();
 const userRepo = new UserPrismaRepository();
+const bookRepo = new BookPrismaRepository();
 const factory = new ReservationFactory(repository, inventoryRepo, userRepo);
 
 module.exports = new ReservationController(
-  new CreateReservationHandler(repository, factory, inventoryRepo),
+  new CreateReservationHandler(
+    repository,
+    factory,
+    inventoryRepo,
+    userRepo,
+    bookRepo,
+    eventBus,
+  ),
   new GetReservationHandler(prisma),
   new GetReservationsHandler(prisma),
   new UpdateReservationHandler(repository),
