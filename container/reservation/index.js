@@ -15,6 +15,7 @@ const {
   ReservationFactory,
 } = require("../../domain/factories/reservationFactory");
 const { eventBus } = require("../../eventBus/eventBus");
+const AuthService = require("../../application/services/authService");
 
 const {
   CreateReservationHandler,
@@ -40,6 +41,7 @@ const inventoryRepo = new InventoryPrismaRepository();
 const userRepo = new UserPrismaRepository();
 const bookRepo = new BookPrismaRepository();
 const factory = new ReservationFactory(repository, inventoryRepo, userRepo);
+const authService = new AuthService(userRepo);
 
 module.exports = new ReservationController(
   new CreateReservationHandler(
@@ -49,6 +51,7 @@ module.exports = new ReservationController(
     userRepo,
     bookRepo,
     eventBus,
+    authService,
   ),
   new GetReservationHandler(prisma),
   new GetReservationsHandler(prisma),

@@ -10,6 +10,7 @@ class CreateReservationHandler {
     userRepository,
     bookRepository,
     eventBus,
+    authService,
   ) {
     this.reservationRepository = reservationRepository;
     this.reservationFactory = reservationFactory;
@@ -17,9 +18,13 @@ class CreateReservationHandler {
     this.userRepository = userRepository;
     this.bookRepository = bookRepository;
     this.eventBus = eventBus;
+    this.authService = authService;
   }
 
   async execute(command) {
+
+   await this.authService.validateUserStatus(command.user_id);
+
     const reservation = await this.reservationFactory.create({
       user_id: command.user_id,
       inventory_id: command.inventory_id,
