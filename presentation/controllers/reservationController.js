@@ -32,7 +32,15 @@ class ReservationController {
 
   async create(req, res, next) {
     try {
-      const command = new CreateReservationCommand(req.body);
+      const header = req.headers.authorization;
+
+    if (!header) {
+    return res.status(401).json({ error: "No token" });
+    }
+
+    const token = header.split(" ")[1];
+
+      const command = new CreateReservationCommand({ ...req.body, token });
       const id = await this.createHandler.execute(command);
       res.status(201).json({ id });
     } catch (e) {

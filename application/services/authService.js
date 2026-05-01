@@ -1,23 +1,14 @@
 const { DomainError } = require("../../domain/errors/domainError");
 
 class AuthService {
-  constructor(userRepository) {
+  constructor(userRepository, jwtService) {
     this.userRepository = userRepository;
+    this.jwtService = jwtService;
   }
-
-  async validateUserForReservation(userId) {
-    const user = await this.userRepository.findById(userId);
-
-    if (!user) {
-      throw new DomainError("Користувача не знайдено в системі.");
-    }
-
-    if (user.role === 'guest') {
-      throw new DomainError("Гості не мають права бронювати книги. Будь ласка, зареєструйтесь як повноцінний читач.");
-    }
-
-    return true;
+  
+  validateToken(token) {
+    return this.jwtService.verifyToken(token);
   }
 }
 
-module.exports = AuthService;
+module.exports = {AuthService};

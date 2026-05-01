@@ -15,7 +15,8 @@ const {
   ReservationFactory,
 } = require("../../domain/factories/reservationFactory");
 const { eventBus } = require("../../eventBus/eventBus");
-const AuthService = require("../../application/services/authService");
+const { AuthService} = require("../../application/services/authService");
+const {JwtService} = require("../../application/services/jwtService.js");
 
 const {
   CreateReservationHandler,
@@ -41,7 +42,8 @@ const inventoryRepo = new InventoryPrismaRepository();
 const userRepo = new UserPrismaRepository();
 const bookRepo = new BookPrismaRepository();
 const factory = new ReservationFactory(repository, inventoryRepo, userRepo);
-const authService = new AuthService(userRepo);
+const jwtService = new JwtService(process.env.JWT_SECRET, "1h");
+const authService = new AuthService(userRepo, jwtService);
 
 module.exports = new ReservationController(
   new CreateReservationHandler(

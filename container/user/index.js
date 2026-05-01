@@ -2,7 +2,7 @@ const prisma = require("../../infrastructure/prisma/client");
 const {
   UserPrismaRepository,
 } = require("../../infrastructure/repositories/userPrismaRepository");
-const { JwtService } = require("../../infrastructure/auth/jwtService");
+const { JwtService } = require("../../application/services/jwtService");
 
 const {
   CreateUserHandler,

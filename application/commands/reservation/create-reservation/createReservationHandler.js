@@ -22,8 +22,7 @@ class CreateReservationHandler {
   }
 
   async execute(command) {
-
-   await this.authService.validateUserStatus(command.user_id);
+   this.authService.validateToken(command.token);
 
     const reservation = await this.reservationFactory.create({
       user_id: command.user_id,

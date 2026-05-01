@@ -1,5 +1,5 @@
 const { eventBus } = require("../eventBus/eventBus");
-const EmailHandler = require("../application/services/emailHandler");
+const EmailHandler = require("../application/services/emailService");
 const NodemailerEmailService = require("../infrastructure/services/email");
 
 const emailService = new NodemailerEmailService();
