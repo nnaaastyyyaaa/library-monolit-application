@@ -7,8 +7,12 @@ class AuthService {
   }
   
   validateToken(token) {
-    return this.jwtService.verifyToken(token);
-  }
+
+   try { return this.jwtService.verifyToken(token); }
+   catch (error) {
+     throw new DomainError("Invalid token");
+   }
+ }
 }
 
 module.exports = {AuthService};
