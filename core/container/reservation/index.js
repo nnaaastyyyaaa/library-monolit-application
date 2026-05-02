@@ -14,9 +14,9 @@ const {
 const {
   ReservationFactory,
 } = require("../../domain/factories/reservationFactory");
-const { eventBus } = require("../../eventBus/eventBus");
-const { AuthService} = require("../../application/services/authService");
-const {JwtService} = require("../../application/services/jwtService.js");
+const eventBus = require("../../../eventBus/eventBus.js");
+const { AuthService } = require("../../application/services/authService");
+const { JwtService } = require("../../application/services/jwtService.js");
 
 const {
   CreateReservationHandler,

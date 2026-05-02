@@ -6,6 +6,7 @@ class EmailHandler {
   }
 
   async handle(event) {
+    console.log("Will handle event");
     if (processedEvents.has(event.id)) {
       return;
     }

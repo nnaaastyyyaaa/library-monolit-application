@@ -1,7 +1,7 @@
-const prisma = require("../../infrastructure/prisma/client");
+const prisma = require("../../../infrastructure/prisma/client");
 const {
   BookPrismaRepository,
-} = require("../../infrastructure/repositories/bookPrismaRepository");
+} = require("../../../infrastructure/repositories/bookPrismaRepository");
 
 const {
   CreateBookHandler,
@@ -21,7 +21,7 @@ const {
 
 const {
   BookController,
-} = require("../../presentation/controllers/bookController");
+} = require("../../../presentation/controllers/bookController");
 
 const repository = new BookPrismaRepository();
 

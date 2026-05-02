@@ -1,18 +1,18 @@
 const express = require("express");
 
-const userRoutes = require("./presentation/routes/userRoutes");
-const bookRoutes = require("./presentation/routes/bookRoutes");
-const categoryRoutes = require("./presentation/routes/categoryRoutes");
-const inventoryRoutes = require("./presentation/routes/inventoryRoutes");
-const reservationRoutes = require("./presentation/routes/reservationRoutes");
+const userRoutes = require("./core/presentation/routes/userRoutes");
+const bookRoutes = require("./core/presentation/routes/bookRoutes");
+const categoryRoutes = require("./core/presentation/routes/categoryRoutes");
+const inventoryRoutes = require("./core/presentation/routes/inventoryRoutes");
+const reservationRoutes = require("./core/presentation/routes/reservationRoutes");
 
-const userController = require("./container/user");
-const bookController = require("./container/book");
-const categoryController = require("./container/category");
-const inventoryController = require("./container/inventory");
-const reservationController = require("./container/reservation");
+const userController = require("./core/container/user");
+const bookController = require("./core/container/book");
+const categoryController = require("./core/container/category");
+const inventoryController = require("./core/container/inventory");
+const reservationController = require("./core/container/reservation");
 
-require("./container/index");
+require("./core/container/index");
 
 const app = express();
 app.use(express.json());

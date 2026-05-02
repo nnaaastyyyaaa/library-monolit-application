@@ -5,14 +5,14 @@ class AuthService {
     this.userRepository = userRepository;
     this.jwtService = jwtService;
   }
-  
-  validateToken(token) {
 
-   try { return this.jwtService.verifyToken(token); }
-   catch (error) {
-     throw new DomainError("Invalid token");
-   }
- }
+  validateToken(token) {
+    try {
+      return this.jwtService.verifyToken(token);
+    } catch (error) {
+      throw new DomainError("Invalid token");
+    }
+  }
 }
 
-module.exports = {AuthService};
+module.exports = { AuthService };
