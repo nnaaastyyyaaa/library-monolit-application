@@ -9,6 +9,9 @@ const {
   DeleteReservationCommand,
 } = require("../../application/commands/reservation/delete-reservation/deleteReservationCommand");
 const {
+  CancellReservationCommand,
+} = require("../../application/commands/reservation/cancell-reservation/cancellReservationCommand");
+const {
   GetReservationQuery,
 } = require("../../application/queries/reservation/get-reservation/getReservationQuery");
 const {
@@ -22,26 +25,53 @@ class ReservationController {
     getAllHandler,
     updateHandler,
     deleteHandler,
+    cancellHandler,
   ) {
     this.createHandler = createHandler;
     this.getHandler = getHandler;
     this.getAllHandler = getAllHandler;
     this.updateHandler = updateHandler;
     this.deleteHandler = deleteHandler;
+    this.cancellHandler = cancellHandler;
   }
 
   async create(req, res, next) {
     try {
       const header = req.headers.authorization;
 
-    if (!header) {
-    return res.status(401).json({ error: "No token" });
-    }
+      if (!header) {
+        return res.status(401).json({ error: "No token" });
+      }
 
-    const token = header.split(" ")[1];
+      const token = header.split(" ")[1];
 
       const command = new CreateReservationCommand({ ...req.body, token });
       const id = await this.createHandler.execute(command);
+      res.status(201).json({ id });
+    } catch (e) {
+      if (e instanceof DomainError) {
+        return res.status(400).json({ error: e.message });
+      }
+      res.status(500).json({ error: "Internal error" });
+    }
+  }
+
+  async cancell(req, res, next) {
+    try {
+      const header = req.headers.authorization;
+
+      if (!header) {
+        return res.status(401).json({ error: "No token" });
+      }
+
+      const token = header.split(" ")[1];
+
+      const command = new CancellReservationCommand({
+        id: req.params.id,
+        token,
+      });
+      console.log(command);
+      const id = await this.cancellHandler.execute(command);
       res.status(201).json({ id });
     } catch (e) {
       if (e instanceof DomainError) {

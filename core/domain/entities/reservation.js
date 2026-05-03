@@ -7,12 +7,15 @@ class Reservation {
     this.inventory_id = inventory_id;
   }
 
-  cancel() {
+  cancell() {
+    console.log("Will cancell");
     this.status = "cancelled";
+    return this;
   }
 
   complete() {
     this.status = "completed";
+    return this;
   }
   isExpired() {
     return this.period.isExpired();

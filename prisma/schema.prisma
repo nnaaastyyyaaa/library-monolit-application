@@ -56,6 +56,17 @@ model reservation {
   inventory        inventory  @relation(fields: [inventory_id], references: [inventory_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+model analytics {
+  analytics_id        Int      @id @default(autoincrement())
+  book_id             Int      @unique
+  book_title          String   @db.VarChar(255)
+  total_reservations  Int      @default(0)
+  active_reservations Int      @default(0)
+  last_reserved_at    DateTime?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
 enum inv_status {
   available
   reserved

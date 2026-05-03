@@ -4,6 +4,7 @@ class ReservationCreatedEvent {
     this.id = this.id = crypto.randomUUID();
     this.userEmail = userEmail;
     this.bookTitle = bookTitle;
+    this.bookId = bookId;
   }
 }
 

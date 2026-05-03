@@ -22,7 +22,7 @@ class CreateReservationHandler {
   }
 
   async execute(command) {
-   this.authService.validateToken(command.token);
+    this.authService.validateToken(command.token);
 
     const reservation = await this.reservationFactory.create({
       user_id: command.user_id,
@@ -41,8 +41,10 @@ class CreateReservationHandler {
     const book = await this.bookRepository.findById(inventory.book_id);
     if (created) {
       const event = new ReservationCreatedEvent({
+        userId: command.user_id,
         userEmail: user.email,
         bookTitle: book.title,
+        bookId: inventory.book_id,
       });
       this.eventBus.publish("ReservationCreatedEvent", event);
     }

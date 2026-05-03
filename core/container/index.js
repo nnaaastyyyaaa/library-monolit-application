@@ -5,13 +5,9 @@ const NodemailerEmailService = require("../infrastructure/services/email");
 const emailService = new NodemailerEmailService();
 const emailHandler = new EmailHandler(emailService);
 
-try {
-  eventBus.subscribe("ReservationCreatedEvent", (event) =>
-    emailHandler.handle(event),
-  );
-} catch (e) {
-  console.log(e);
-}
+eventBus.subscribe("ReservationCreatedEvent", (event) =>
+  emailHandler.handle(event),
+);
 
 module.exports = {
   eventBus,

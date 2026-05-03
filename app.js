@@ -13,6 +13,7 @@ const inventoryController = require("./core/container/inventory");
 const reservationController = require("./core/container/reservation");
 
 require("./core/container/index");
+require("./analytics/container/index");
 
 const app = express();
 app.use(express.json());

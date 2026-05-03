@@ -28,6 +28,9 @@ const {
   DeleteReservationHandler,
 } = require("../../application/commands/reservation/delete-reservation/deleteReservationHandler");
 const {
+  CancellReservationHandler,
+} = require("../../application/commands/reservation/cancell-reservation/cancellReservationHandler.js");
+const {
   GetReservationHandler,
 } = require("../../application/queries/reservation/get-reservation/getReservationHandler");
 const {
@@ -59,4 +62,10 @@ module.exports = new ReservationController(
   new GetReservationsHandler(prisma),
   new UpdateReservationHandler(repository),
   new DeleteReservationHandler(repository),
+  new CancellReservationHandler(
+    repository,
+    inventoryRepo,
+    eventBus,
+    authService,
+  ),
 );
