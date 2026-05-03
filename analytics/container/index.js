@@ -8,13 +8,17 @@ const {
 const {
   ReservationCancelledHandler,
 } = require("../application/reservationCancelledHandler");
+const { analyticsController } = require("./analytics/index");
+const analyticsRoutes = require("../presentation/analyticsRoutes");
+
+const repository = new AnalyticsRepository();
 
 const analyticsCreatedHandler = new ReservationCreatedHandler(
-  new AnalyticsRepository(),
+  repository
 );
 
 const analyticsCancelledHandler = new ReservationCancelledHandler(
-  new AnalyticsRepository(),
+  repository
 );
 
 eventBus.subscribe("ReservationCreatedEvent", (event) =>
@@ -24,3 +28,7 @@ eventBus.subscribe("ReservationCreatedEvent", (event) =>
 eventBus.subscribe("ReservationCancelledEvent", (event) =>
   analyticsCancelledHandler.handle(event),
 );
+
+const analyticsRouter = analyticsRoutes(analyticsController);
+
+module.exports = { analyticsRouter };

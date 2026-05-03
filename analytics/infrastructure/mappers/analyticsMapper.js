@@ -29,12 +29,11 @@ class AnalyticsMapper {
 
   static toPersistence(book) {
     return {
-      book_title: book.book_title,
-      book_id: book.book_id,
-      total_reservations: book.total_reservations,
-      active_reservations: book.active_reservations,
-      last_reserved_at: book.last_reserved_at,
-      updated_at: book.updated_at,
+      book_id: book.bookId, 
+      book_title: book.bookTitle,
+      total_reservations: book.totalReservations,
+      active_reservations: book.activeReservations,
+      last_reserved_at: book.lastReservedAt,
     };
   }
 }

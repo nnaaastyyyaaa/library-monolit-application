@@ -6,7 +6,6 @@ const {
 class AnalyticsRepository {
   async create(analytics) {
     const data = AnalyticsMapper.toPersistence(analytics);
-
     const created = await prisma.analytics.create({
       data,
     });

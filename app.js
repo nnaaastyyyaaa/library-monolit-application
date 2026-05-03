@@ -11,6 +11,7 @@ const bookController = require("./core/container/book");
 const categoryController = require("./core/container/category");
 const inventoryController = require("./core/container/inventory");
 const reservationController = require("./core/container/reservation");
+const { analyticsRouter } = require('./analytics/container/index');
 
 require("./core/container/index");
 require("./analytics/container/index");
@@ -19,6 +20,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/users", userRoutes(userController));
+app.use("/analytics", analyticsRouter);
 app.use("/books", bookRoutes(bookController));
 app.use("/categories", categoryRoutes(categoryController));
 app.use("/inventories", inventoryRoutes(inventoryController));

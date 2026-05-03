@@ -1,9 +1,21 @@
 class ReservationCancelledHandler {
-  constructor(analyticsRepository) {
-    this.analyticsRepository = analyticsRepository;
+  constructor(repository) {
+    this.repository = repository;
   }
-  handle(event) {
-    console.log("Analytics cancell received:", event);
+
+  async handle(event) {
+    try {
+      const { bookId } = event;
+      const existingAnalytics = await this.repository.findByBookId(bookId);
+
+      if (existingAnalytics && existingAnalytics.activeReservations > 0) {
+        existingAnalytics.activeReservations =- 1;
+        await this.repository.update(existingAnalytics.id, existingAnalytics);
+      }
+    } catch (error) {
+      console.error('[Analytics] Error processing RESERVATION_CANCELLED:', error.message);
+      throw error;
+    }
   }
 }
 
