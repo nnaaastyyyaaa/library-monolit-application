@@ -12,11 +12,11 @@ class ReservationCreatedHandler {
         existingAnalytics.totalReservations += 1;
         existingAnalytics.activeReservations += 1;
         existingAnalytics.lastReservedAt = new Date();
-        await this.repository.update(existingAnalytics.id, existingAnalytics);
+        await this.repository.update(existingAnalytics.analyticsId, existingAnalytics);
       } else {
         await this.repository.create({
           bookId: bookId,
-         bookTitle: bookTitle,
+          bookTitle: bookTitle,
           totalReservations: 1,
           activeReservations: 1,
           lastReservedAt: new Date()

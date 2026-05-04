@@ -9,8 +9,9 @@ class ReservationCancelledHandler {
       const existingAnalytics = await this.repository.findByBookId(bookId);
 
       if (existingAnalytics && existingAnalytics.activeReservations > 0) {
-        existingAnalytics.activeReservations =- 1;
-        await this.repository.update(existingAnalytics.id, existingAnalytics);
+        existingAnalytics.activeReservations -= 1;
+        
+        await this.repository.update(existingAnalytics.analyticsId, existingAnalytics);
       }
     } catch (error) {
       console.error('[Analytics] Error processing RESERVATION_CANCELLED:', error.message);

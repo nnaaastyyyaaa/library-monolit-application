@@ -16,24 +16,24 @@ class AnalyticsMapper {
     // }
 
     return new Analytics({
-      analytics_id: raw.analytics_id,
-      book_title: raw.book_title,
-      book_id: raw.book_id,
-      total_reservations: raw.total_reservations,
-      active_reservations: raw.active_reservations,
-      last_reserved_at: raw.last_reserved_at,
-      created_at: raw.created_at,
-      updated_at: raw.updated_at,
+      analyticsId: raw.analytics_id,
+      bookTitle: raw.book_title,
+      bookId: raw.book_id,
+      totalReservations: raw.total_reservations,
+      activeReservations: raw.active_reservations,
+      lastReservedAt: raw.last_reserved_at,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
     });
   }
 
-  static toPersistence(book) {
+  static toPersistence(domainObj) {
     return {
-      book_id: book.bookId, 
-      book_title: book.bookTitle,
-      total_reservations: book.totalReservations,
-      active_reservations: book.activeReservations,
-      last_reserved_at: book.lastReservedAt,
+      book_id: domainObj.bookId, 
+      book_title: domainObj.bookTitle,
+      total_reservations: domainObj.totalReservations,
+      active_reservations: domainObj.activeReservations,
+      last_reserved_at: domainObj.lastReservedAt,
     };
   }
 }

@@ -1,42 +1,46 @@
 class Analytics {
   constructor({
-    id,
-    book_id,
-    title,
-    total_reservations,
-    active_reservations,
-    last_reserved_at,
-    created_at,
-    updated_at,
+    analyticsId, // Змінили на analyticsId, щоб збігалося з базою
+    bookId,      // Тільки camelCase!
+    bookTitle,   // Змінили title на bookTitle для повної відповідності
+    totalReservations,
+    activeReservations,
+    lastReservedAt,
+    createdAt,
+    updatedAt,
   }) {
-    this.id = id;
-    this.book_id = book_id;
-    this.title = title;
-    this.total_reservations = total_reservations;
-    this.active_reservations = active_reservations;
-    this.last_reserved_at = last_reserved_at;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.analyticsId = analyticsId;
+    this.bookId = bookId;
+    this.bookTitle = bookTitle;
+    this.totalReservations = totalReservations;
+    this.activeReservations = activeReservations;
+    this.lastReservedAt = lastReservedAt;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
+
   updateTotalReservations(total) {
-    this.total_reservations = total;
-    this.updated_at = Date.now();
+    this.totalReservations = total;
+    this.updatedAt = new Date(); // Для БД краще використовувати new Date()
   }
+
   updateActiveReservations(active) {
-    this.active_reservations = active;
-    this.updated_at = Date.now();
+    this.activeReservations = active;
+    this.updatedAt = new Date();
   }
+
   updateLastReserved(date) {
-    this.last_reserved_at = date;
-    this.updated_at = Date.now();
+    this.lastReservedAt = date;
+    this.updatedAt = new Date();
   }
+
   updateCreatedAt(date) {
-    this.created_at = date;
-    this.updated_at = Date.now();
+    this.createdAt = date;
+    this.updatedAt = new Date();
   }
+
   updateUpdatedAt(date) {
-    this.updated_at = date;
-    this.updated_at = Date.now();
+    this.updatedAt = date;
   }
 }
 
