@@ -6,7 +6,6 @@ class EmailHandler {
   }
 
   async handle(event) {
-    console.log("Will handle event");
     if (processedEvents.has(event.id)) {
       return;
     }
@@ -18,7 +17,6 @@ class EmailHandler {
         email: event.userEmail,
         bookTitle: event.bookTitle,
       });
-      console.log(`Handled event for ${event.userEmail}`);
     } catch (e) {
       console.error("Email failed:", e.message);
     }

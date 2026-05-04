@@ -8,7 +8,6 @@ class Reservation {
   }
 
   cancell() {
-    console.log("Will cancell");
     this.status = "cancelled";
     return this;
   }

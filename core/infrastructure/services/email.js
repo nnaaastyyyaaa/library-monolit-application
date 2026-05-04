@@ -18,8 +18,6 @@ class NodemailerEmailService {
       subject: "Book reservation",
       text: `You have successfully reserved "${bookTitle}"`,
     });
-
-    console.log(`📧 Email sent to ${email}`);
   }
 }
 

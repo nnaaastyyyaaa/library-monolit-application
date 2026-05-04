@@ -47,8 +47,8 @@ model inventory {
 
 model reservation {
   reservation_id   Int        @id @default(autoincrement())
-  reservation_date DateTime   @default(dbgenerated("CURRENT_DATE")) @db.Date
-  expiration_date  DateTime   @db.Date
+  reservation_date DateTime   @default(dbgenerated("CURRENT_DATE")) @db.Timestamp()
+  expiration_date  DateTime   @db.Timestamp()
   status           res_status @default(active)
   user_id          Int
   user             user       @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)

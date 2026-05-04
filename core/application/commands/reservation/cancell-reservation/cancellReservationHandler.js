@@ -30,7 +30,6 @@ class CancellReservationHandler {
     await this.inventoryRepository.update(inventory.id, inventory);
 
     const cancelled = reservation.cancell();
-    console.log("CANCELLED", cancelled);
 
     const updated = await this.reservationRepository.update(
       command.id,

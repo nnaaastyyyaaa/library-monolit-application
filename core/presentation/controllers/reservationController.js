@@ -70,9 +70,8 @@ class ReservationController {
         id: req.params.id,
         token,
       });
-      console.log(command);
       const id = await this.cancellHandler.execute(command);
-      res.status(201).json({ id });
+      res.status(201).json({ message: "Reservation cancelled" });
     } catch (e) {
       if (e instanceof DomainError) {
         return res.status(400).json({ error: e.message });
